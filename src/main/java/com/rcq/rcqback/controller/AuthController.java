@@ -1,13 +1,10 @@
-package com.rcq.rcqauth.controller;
+package com.rcq.rcqback.controller;
 
-import com.rcq.rcqauth.dto.loginUserDto;
-import com.rcq.rcqauth.dto.signUpUserDto;
-import com.rcq.rcqauth.entity.User;
-import com.rcq.rcqauth.service.AuthService;
-import com.rcq.rcqauth.util.ApiResponse;
-import com.rcq.rcqauth.util.ApiResponseEnum;
+import com.rcq.rcqback.dto.auth.loginUserDto;
+import com.rcq.rcqback.dto.auth.signUpUserDto;
+import com.rcq.rcqback.service.auth.AuthService;
+import com.rcq.rcqback.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class AuthController {
+
 
     @Autowired
     private final AuthService authService;
@@ -28,7 +26,7 @@ public class AuthController {
         ApiResponse apiResponse=new ApiResponse();
         if(!authService.mailCheck(mail)){
             apiResponse.setSuccessResonse();
-       }else{
+        }else{
             apiResponse.setFAILResonse("중복이 존재합니다.");
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
@@ -42,7 +40,7 @@ public class AuthController {
         }else{
             apiResponse.setFAILResonse("중복이 존재합니다.");
 
-    }
+        }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
 
@@ -70,5 +68,6 @@ public class AuthController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+
 
 }

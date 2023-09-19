@@ -1,10 +1,10 @@
-package com.rcq.rcqauth.service;
+package com.rcq.rcqback.service.auth;
 
-import com.rcq.rcqauth.config.WebSecurityConfig;
-import com.rcq.rcqauth.dto.loginUserDto;
-import com.rcq.rcqauth.dto.signUpUserDto;
-import com.rcq.rcqauth.entity.User;
-import com.rcq.rcqauth.repository.UserRepository;
+import com.rcq.rcqback.config.WebSecurityConfig;
+import com.rcq.rcqback.dto.auth.loginUserDto;
+import com.rcq.rcqback.dto.auth.signUpUserDto;
+import com.rcq.rcqback.entity.User;
+import com.rcq.rcqback.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

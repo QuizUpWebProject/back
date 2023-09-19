@@ -1,4 +1,4 @@
-package com.rcq.rcqauth.dto;
+package com.rcq.rcqback.dto.auth;
 
 import lombok.Data;
 import lombok.Getter;

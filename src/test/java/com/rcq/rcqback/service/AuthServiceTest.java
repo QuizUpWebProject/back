@@ -1,21 +1,19 @@
-package com.rcq.rcqauth.service;
+package com.rcq.rcqback.service;
 
-import com.rcq.rcqauth.dto.loginUserDto;
-import com.rcq.rcqauth.dto.signUpUserDto;
-import com.rcq.rcqauth.entity.User;
-import com.rcq.rcqauth.repository.UserRepository;
-import org.junit.jupiter.api.BeforeAll;
+import com.rcq.rcqback.dto.auth.signUpUserDto;
+import com.rcq.rcqback.dto.auth.loginUserDto;
+import com.rcq.rcqback.entity.User;
+import com.rcq.rcqback.repository.UserRepository;
+import com.rcq.rcqback.service.auth.AuthService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -24,7 +22,7 @@ class AuthServiceTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private  AuthService authService;
+    private AuthService authService;
 
     @BeforeEach
     @Transactional

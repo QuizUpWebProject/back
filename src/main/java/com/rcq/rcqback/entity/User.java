@@ -1,4 +1,4 @@
-package com.rcq.rcqauth.entity;
+package com.rcq.rcqback.entity;
 
 import lombok.Data;
 

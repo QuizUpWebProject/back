@@ -1,4 +1,4 @@
-package com.rcq.rcqauth.config;
+package com.rcq.rcqback.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

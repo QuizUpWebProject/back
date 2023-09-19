@@ -1,9 +1,8 @@
-package com.rcq.rcqauth.util;
+package com.rcq.rcqback.util;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 

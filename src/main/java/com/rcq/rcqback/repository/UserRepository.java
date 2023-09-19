@@ -1,6 +1,6 @@
-package com.rcq.rcqauth.repository;
+package com.rcq.rcqback.repository;
 
-import com.rcq.rcqauth.entity.User;
+import com.rcq.rcqback.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.stereotype.Repository;

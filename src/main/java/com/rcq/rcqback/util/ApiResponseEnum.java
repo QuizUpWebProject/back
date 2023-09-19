@@ -1,4 +1,4 @@
-package com.rcq.rcqauth.util;
+package com.rcq.rcqback.util;
 
 import org.springframework.http.HttpStatus;
 

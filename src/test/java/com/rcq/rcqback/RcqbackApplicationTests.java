@@ -1,4 +1,4 @@
-package com.rcq.rcqauth;
+package com.rcq.rcqback;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

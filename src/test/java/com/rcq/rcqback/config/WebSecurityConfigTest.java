@@ -1,11 +1,10 @@
-package com.rcq.rcqauth.config;
+package com.rcq.rcqback.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class WebSecurityConfigTest {
     @Autowired
