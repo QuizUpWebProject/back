@@ -11,32 +11,38 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ApiResponse {
+public class ApiResponse<T> {
 
     private Integer code;
     private HttpStatus httpStatus;
     private String message;
     private Integer count;
-    private List<Object> result;
-    private void setApiResonse(Integer code, HttpStatus httpStatus, String message){
+    private List<T> result;
+    private void setApiResponse(Integer code, HttpStatus httpStatus, String message){
         this.setCode(code);
         this.setHttpStatus(httpStatus);
         this.setMessage(message);
     }
-    public void setSuccessResonse(){
+    public void setSuccessResponse(){
 
         this.setCode(ApiResponseEnum.OK.getCode());
         this.setHttpStatus(ApiResponseEnum.OK.getHttpStatus());
         this.setMessage("success");
     }
-    public void setFAILResonse(String message){
+    public void setFAILResponse(String message){
 
         this.setCode(ApiResponseEnum.FAIL.getCode());
         this.setHttpStatus(ApiResponseEnum.FAIL.getHttpStatus());
         this.setMessage(message);
     }
+    public void setNOTFOUNDResponse(String message){
 
-    public void setINTERNAL_SERVER_ERRORResonse(String message){
+        this.setCode(ApiResponseEnum.NOT_FOUND.getCode());
+        this.setHttpStatus(ApiResponseEnum.NOT_FOUND.getHttpStatus());
+        this.setMessage(message);
+    }
+
+    public void setINTERNAL_SERVER_ERRORResponse(String message){
 
         this.setCode(ApiResponseEnum.INTERNAL_SERVER_ERROR.getCode());
         this.setHttpStatus(ApiResponseEnum.INTERNAL_SERVER_ERROR.getHttpStatus());
@@ -74,11 +80,11 @@ public class ApiResponse {
         this.count = count;
     }
 
-    public List<Object> getResult() {
+    public List<T> getResult() {
         return result;
     }
 
-    public void setResult(List<Object> result) {
+    public void setResult(List<T> result) {
         this.result = result;
     }
 

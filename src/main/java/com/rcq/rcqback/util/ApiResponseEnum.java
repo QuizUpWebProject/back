@@ -8,6 +8,7 @@ public enum ApiResponseEnum {
     NOT_FOUND(404,HttpStatus.NOT_FOUND),
     INTERNAL_SERVER_ERROR(500,HttpStatus.INTERNAL_SERVER_ERROR);
 
+
     private final int code;
     private final HttpStatus httpStatus;
     ApiResponseEnum(int code,HttpStatus httpStatus) {
