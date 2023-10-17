@@ -29,10 +29,8 @@ public class GroupStudy implements Serializable {
     @Column(name="about")
     private String about;
 
-
-
-
-
+    @Column(name="masterid")
+    private int masterid;
 
 
 }
