@@ -13,6 +13,10 @@ import com.rcq.rcqback.repository.problem.ProblemRepository;
 import com.rcq.rcqback.util.ProblemListStandardEnum;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,8 +43,12 @@ public class ProblemService {
     @Transactional
     public List<getProblemListDto> getProblemList(checkProblemListDto checkProblemListDto){
         List<getProblemListDto> dtoList = new ArrayList<>();
-        List<ProblemList> problemLists = problemListRepository.findAllByCategory(checkProblemListDto.getCategory());
-        problemLists=sortProblemList(problemLists,checkProblemListDto.getStandardEnum());
+        int pagenumber=checkProblemListDto.getPagenumber();
+        int pageSize=checkProblemListDto.getPageSize();
+        Sort sort=sortProblemList(checkProblemListDto.getStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Page<ProblemList> problemListPage = problemListRepository.findAllByCategory(checkProblemListDto.getCategory(),pageable);
+        List<ProblemList> problemLists=problemListPage.getContent();
         for(ProblemList problemList: problemLists){
             getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
             dtoList.add(dto);
@@ -48,22 +56,23 @@ public class ProblemService {
         return dtoList;
     }
 
-    public List<ProblemList> sortProblemList(List<ProblemList> problemLists, ProblemListStandardEnum standardEnum){
-        Comparator<ProblemList> comparator = null;
-        if(standardEnum==ProblemListStandardEnum.LATEST){
-            comparator=Comparator.comparing(ProblemList::getId).reversed();
+    public Sort sortProblemList(ProblemListStandardEnum standardEnum){
+        Sort sort = Sort.unsorted();
+        switch (standardEnum) {
+            case LATEST:
+                sort = Sort.by("id").descending();
+                break;
+            case OLDEST:
+                sort = Sort.by("id").ascending();
+                break;
+            case RECOMMEND:
+                sort = Sort.by("recommendcount").descending();
+                break;
+            case VIEW:
+                sort = Sort.by("viewcount").descending();
+                break;
         }
-        if(standardEnum==ProblemListStandardEnum.OLDEST){
-            comparator=Comparator.comparing(ProblemList::getId);
-        }
-        if(standardEnum==ProblemListStandardEnum.RECOMMEND){
-            comparator=Comparator.comparing(ProblemList::getRecommendcount).reversed();
-        }
-        if(standardEnum==ProblemListStandardEnum.VIEW){
-            comparator=Comparator.comparing(ProblemList::getViewcount).reversed();
-        }
-        problemLists.sort(comparator);
-        return problemLists;
+        return sort;
     }
 
 
