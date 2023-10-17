@@ -1,10 +1,13 @@
 package com.rcq.rcqback.entity.groupstudy;
 
 
+import com.rcq.rcqback.entity.problem.Problem;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,6 +31,10 @@ public class GroupStudy implements Serializable {
 
     @Column(name="about")
     private String about;
+
+    @OneToMany
+    @JoinColumn(name="problemlist")
+    private List<Problem> problems = new ArrayList<>();
 
     @Column(name="masterid")
     private int masterid;

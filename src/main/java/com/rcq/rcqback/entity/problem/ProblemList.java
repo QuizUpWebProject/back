@@ -35,12 +35,10 @@ public class ProblemList implements Serializable {
     @Column(name="created_at")
     private LocalDateTime created_at;
 
-    @OneToMany
-    @JoinColumn(name="problemlist")
+    @OneToMany(mappedBy = "problemList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Problem> problems = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "problemlist") // 다른 테이블과의 관계 매핑
+    @OneToMany(mappedBy = "problemlist", cascade = CascadeType.ALL, orphanRemoval = true)// 다른 테이블과의 관계 매핑
     private List<Comment> comments=new ArrayList<>();
 
 
