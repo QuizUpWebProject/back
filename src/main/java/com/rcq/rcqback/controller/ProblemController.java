@@ -26,7 +26,7 @@ public class ProblemController {
         this.problemService= problemService;
     }
 
-    @GetMapping("/api/getlist")
+    @GetMapping("/problem/api/getlist")
     public ResponseEntity<ApiResponse> getProblemList(@RequestBody checkProblemListDto checkProblemListDto){
         ApiResponse apiResponse=new ApiResponse();
         List<getProblemListDto> problemListDtos=problemService.getProblemList(checkProblemListDto);
@@ -39,12 +39,25 @@ public class ProblemController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
 
-    @PostMapping("/api/makeproblem")
+    @PostMapping("/problem/api/makeproblem")
     public ResponseEntity<ApiResponse> makeProblem(makeProblemDto makeproblemdto){
         ApiResponse apiResponse=new ApiResponse();
         try{
         problemService.saveProblem(makeproblemdto);
         apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="[문제 생성중 오류]";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @PostMapping("/problem/api/makeproblemlist")
+    public ResponseEntity<ApiResponse> makeProblemList(makeProblemDto makeproblemdto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            problemService.saveProblem(makeproblemdto);
+            apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="[문제 생성중 오류]";
             apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
