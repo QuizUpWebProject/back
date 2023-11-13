@@ -1,7 +1,7 @@
 package com.rcq.rcqback.dto.problem;
 
 
-import com.rcq.rcqback.util.ProblemListStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
 import lombok.Getter;
 import lombok.Setter;
 

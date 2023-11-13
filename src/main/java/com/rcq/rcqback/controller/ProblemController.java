@@ -1,6 +1,9 @@
 package com.rcq.rcqback.controller;
 
 
+import com.rcq.rcqback.dto.comment.checkCommentDto;
+import com.rcq.rcqback.dto.comment.getCommentDto;
+import com.rcq.rcqback.dto.comment.makeCommentDto;
 import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
@@ -36,6 +39,7 @@ public class ProblemController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+
     @GetMapping("/problem/api/getproblems")
     public ResponseEntity<ApiResponse> getProblems(@RequestBody checkProblemsDto checkProblemsDto){
         ApiResponse apiResponse=new ApiResponse();
@@ -45,6 +49,19 @@ public class ProblemController {
             apiResponse.setSuccessResponse();
         }else{
             apiResponse.setNOTFOUNDResponse("해당 문제집은 비어있습니다.");
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/problem/api/getcomments")
+    public ResponseEntity<ApiResponse> getComments(@RequestBody checkCommentDto checkCommentDto){
+        ApiResponse apiResponse=new ApiResponse();
+        List<getCommentDto> commentDtoList=problemService.getComments(checkCommentDto);
+        if(commentDtoList.size()>0){
+            apiResponse.setResult(commentDtoList);
+            apiResponse.setSuccessResponse();
+        }else{
+            apiResponse.setNOTFOUNDResponse("댓글이 비어있습니다.");
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
@@ -71,6 +88,19 @@ public class ProblemController {
             apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="[문제집 생성중 오류]";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @PostMapping("/problem/api/makecomment")
+    public ResponseEntity<ApiResponse> makeComment(@RequestBody makeCommentDto makeCommentDto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            problemService.saveComment(makeCommentDto);
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="[댓글 작성 오류]";
             apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());

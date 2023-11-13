@@ -1,4 +1,4 @@
-package com.rcq.rcqback.util;
+package com.rcq.rcqback.util.StandardEnum;
 
 public enum ProblemListStandardEnum {
     LATEST, // 가장 최근에 생성된 Problemlist

@@ -8,5 +8,6 @@ import lombok.Setter;
 public class makeCommentDto {
 
     private String content;
+    private String userid;
     private Long problemlistid;
 }

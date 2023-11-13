@@ -1,6 +1,8 @@
 package com.rcq.rcqback.service.problem;
 
 
+import com.rcq.rcqback.dto.comment.checkCommentDto;
+import com.rcq.rcqback.dto.comment.getCommentDto;
 import com.rcq.rcqback.dto.comment.makeCommentDto;
 import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.entity.comment.Comment;
@@ -9,8 +11,9 @@ import com.rcq.rcqback.entity.problem.ProblemList;
 import com.rcq.rcqback.repository.comment.CommentRepository;
 import com.rcq.rcqback.repository.problem.ProblemListRepository;
 import com.rcq.rcqback.repository.problem.ProblemRepository;
-import com.rcq.rcqback.util.ProblemListStandardEnum;
-import com.rcq.rcqback.util.ProblemsStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.CommentStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemsStandardEnum;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -88,6 +91,25 @@ public class ProblemService {
         return dtoList;
     }
 
+    @Transactional
+    public List<getCommentDto> getComments(checkCommentDto checkCommentDto){
+        List<getCommentDto> dtoList = new ArrayList<>();
+        int pagenumber=checkCommentDto.getPagenumber();
+        int pageSize=checkCommentDto.getPageSize();
+        Sort sort=sortComment(checkCommentDto.getCommentStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Page<Comment> commentPage = commentRepository.findByProblemListId(
+                checkCommentDto.getProblemlistid(),
+                pageable
+        );
+        List<Comment> comments=commentPage.getContent();
+        for(Comment comment :comments){
+            getCommentDto dto=modelMapper.map(comment,getCommentDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
     public Sort sortProblemList(ProblemListStandardEnum standardEnum){
         Sort sort = Sort.unsorted();
         switch (standardEnum) {
@@ -117,6 +139,21 @@ public class ProblemService {
                 break;
             case VIEW:
                 sort = Sort.by("viewcount").descending();
+                break;
+        }
+        return sort;
+    }
+    public Sort sortComment(CommentStandardEnum standardEnum){
+        Sort sort = Sort.unsorted();
+        switch (standardEnum) {
+            case LATEST:
+                sort = Sort.by("id").descending();
+                break;
+            case OLDEST:
+                sort = Sort.by("id").ascending();
+                break;
+            case RECOMMEND:
+                sort = Sort.by("recommendcount").descending();
                 break;
         }
         return sort;

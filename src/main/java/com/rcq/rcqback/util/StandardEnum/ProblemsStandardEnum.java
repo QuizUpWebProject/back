@@ -1,4 +1,4 @@
-package com.rcq.rcqback.util;
+package com.rcq.rcqback.util.StandardEnum;
 
 public enum ProblemsStandardEnum {
 
