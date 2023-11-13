@@ -9,5 +9,7 @@ import lombok.Setter;
 @Setter
 public class checkProblemsDto {
     Long problemlistid;
+    int pagenumber;
+    int pageSize;
     ProblemsStandardEnum problemsStandardEnum;
 }

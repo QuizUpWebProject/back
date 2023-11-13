@@ -39,12 +39,12 @@ public class ProblemController {
     @GetMapping("/problem/api/getproblems")
     public ResponseEntity<ApiResponse> getProblems(@RequestBody checkProblemsDto checkProblemsDto){
         ApiResponse apiResponse=new ApiResponse();
-        List<getProblemListDto> problemListDtos=problemService.getProblemList(checkProblemListDto);
-        if(problemListDtos.size()>0){
-            apiResponse.setResult(problemListDtos);
+        List<getProblemsDto> problemsDtoList=problemService.getProblems(checkProblemsDto);
+        if(problemsDtoList.size()>0){
+            apiResponse.setResult(problemsDtoList);
             apiResponse.setSuccessResponse();
         }else{
-            apiResponse.setNOTFOUNDResponse("해당 카테고리에 문제목록이 존재하지않습니다.");
+            apiResponse.setNOTFOUNDResponse("해당 문제집은 비어있습니다.");
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }

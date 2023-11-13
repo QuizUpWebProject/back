@@ -1,17 +1,16 @@
 package com.rcq.rcqback.service.problem;
 
 
-import com.rcq.rcqback.dto.auth.signUpUserDto;
-import com.rcq.rcqback.dto.problem.checkProblemListDto;
-import com.rcq.rcqback.dto.problem.getProblemListDto;
-import com.rcq.rcqback.dto.problem.makeProblemDto;
-import com.rcq.rcqback.dto.problem.makeProblemListDto;
-import com.rcq.rcqback.entity.User;
+import com.rcq.rcqback.dto.comment.makeCommentDto;
+import com.rcq.rcqback.dto.problem.*;
+import com.rcq.rcqback.entity.comment.Comment;
 import com.rcq.rcqback.entity.problem.Problem;
 import com.rcq.rcqback.entity.problem.ProblemList;
+import com.rcq.rcqback.repository.comment.CommentRepository;
 import com.rcq.rcqback.repository.problem.ProblemListRepository;
 import com.rcq.rcqback.repository.problem.ProblemRepository;
 import com.rcq.rcqback.util.ProblemListStandardEnum;
+import com.rcq.rcqback.util.ProblemsStandardEnum;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -29,6 +28,7 @@ public class ProblemService {
 
     private final ProblemListRepository problemListRepository;
     private final ProblemRepository problemRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper = new ModelMapper();
 
     @Transactional
@@ -70,16 +70,19 @@ public class ProblemService {
     }
 
     @Transactional
-    public List<getProblemListDto> getProblems(checkProblemListDto checkProblemListDto){
-        List<getProblemListDto> dtoList = new ArrayList<>();
-        int pagenumber=checkProblemListDto.getPagenumber();
-        int pageSize=checkProblemListDto.getPageSize();
-        Sort sort=sortProblemList(checkProblemListDto.getStandardEnum());
+    public List<getProblemsDto> getProblems(checkProblemsDto checkProblemsDto){
+        List<getProblemsDto> dtoList = new ArrayList<>();
+        int pagenumber=checkProblemsDto.getPagenumber();
+        int pageSize=checkProblemsDto.getPageSize();
+        Sort sort=sortProblems(checkProblemsDto.getProblemsStandardEnum());
         Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
-        Page<ProblemList> problemListPage = problemListRepository.findAllByCategory(checkProblemListDto.getCategory(),pageable);
-        List<ProblemList> problemLists=problemListPage.getContent();
-        for(ProblemList problemList: problemLists){
-            getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
+        Page<Problem> problemPage = problemRepository.findByProblemListId(
+                checkProblemsDto.getProblemlistid(),
+                pageable
+        );
+        List<Problem> problems=problemPage.getContent();
+        for(Problem problem :problems){
+            getProblemsDto dto=modelMapper.map(problem,getProblemsDto.class);
             dtoList.add(dto);
         }
         return dtoList;
@@ -102,6 +105,31 @@ public class ProblemService {
                 break;
         }
         return sort;
+    }
+    public Sort sortProblems(ProblemsStandardEnum standardEnum){
+        Sort sort = Sort.unsorted();
+        switch (standardEnum) {
+            case LATEST:
+                sort = Sort.by("id").descending();
+                break;
+            case OLDEST:
+                sort = Sort.by("id").ascending();
+                break;
+            case VIEW:
+                sort = Sort.by("viewcount").descending();
+                break;
+        }
+        return sort;
+    }
+
+    public Comment saveComment(makeCommentDto makeCommentDto){
+
+        Comment comment=new Comment();
+        comment.setContent(makeCommentDto.getContent());
+        comment.setProblemlist(problemListRepository.findByid(makeCommentDto.getProblemlistid()));
+        return  commentRepository.save(comment);
+
+
     }
 
 

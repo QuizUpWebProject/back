@@ -27,7 +27,8 @@ public class Problem implements Serializable {
     @Column(name = "condition")
     @Enumerated(EnumType.STRING)
     private ProblemConditionEnum problemConditionEnum;
-
+    @Column(name="created_at")
+    private LocalDateTime created_at;
 
     @ManyToOne
     @JoinColumn(name = "problemlist_id") // Problem 엔티티의 problemList와 매핑되는 컬럼

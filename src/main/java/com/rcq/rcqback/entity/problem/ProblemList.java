@@ -1,5 +1,6 @@
 package com.rcq.rcqback.entity.problem;
 
+import com.rcq.rcqback.entity.comment.Comment;
 import lombok.Data;
 
 import javax.persistence.*;

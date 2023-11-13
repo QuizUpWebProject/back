@@ -1,9 +1,11 @@
-package com.rcq.rcqback.entity.problem;
+package com.rcq.rcqback.entity.comment;
 
+import com.rcq.rcqback.entity.problem.ProblemList;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,6 +19,13 @@ public class Comment implements Serializable {
     private String content;
     @Column(name = "recommendcount")
     private Long recommendcount;
+
+    @Column(name="userid")
+    private String userid;
+
+    @Column(name="created_at")
+    private LocalDateTime created_at;
+
 
     @ManyToOne
     @JoinColumn(name = "problemlist_id")
