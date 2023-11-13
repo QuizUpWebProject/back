@@ -4,6 +4,7 @@ package com.rcq.rcqback.service.problem;
 import com.rcq.rcqback.dto.comment.checkCommentDto;
 import com.rcq.rcqback.dto.comment.getCommentDto;
 import com.rcq.rcqback.dto.comment.makeCommentDto;
+import com.rcq.rcqback.dto.condition.updateConditionDto;
 import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.entity.comment.Comment;
 import com.rcq.rcqback.entity.problem.Problem;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
 
@@ -168,7 +170,38 @@ public class ProblemService {
 
 
     }
+    public void updateCondition(updateConditionDto updateConditionDto){
+        Optional<Problem> problemOptional=problemRepository.findById(updateConditionDto.getProblemid());
+        if (problemOptional.isPresent()) {
+            Problem problem = problemOptional.get();
+            problem.setProblemConditionEnum(updateConditionDto.getProblemConditionEnum());
+            problemRepository.save(problem);
+        } else {
+            throw new EntityNotFoundException("Problem with ID " + updateConditionDto.getProblemid() + " not found.");
+        }
+        }
+
+        public List<getProblemsDto> searchProblem(searchProblemDto searchProblemDto){
+
+            List<getProblemsDto> dtoList = new ArrayList<>();
+            int pagenumber= searchProblemDto.getPagenumber();
+            int pageSize=searchProblemDto.getPageSize();
+            Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
+            Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+            Page<Problem> problemPage = problemRepository.findByProblemListIdAndTitleContaining(
+                    searchProblemDto.getProblemlistid(), searchProblemDto.getWord(),
+                    pageable
+            );
+
+            List<Problem> problems=problemPage.getContent();
+            for(Problem problem :problems){
+                getProblemsDto dto=modelMapper.map(problem,getProblemsDto.class);
+                dtoList.add(dto);
+            }
+            return dtoList;
+        }
+    }
 
 
 
-}
+

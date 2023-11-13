@@ -4,6 +4,7 @@ package com.rcq.rcqback.controller;
 import com.rcq.rcqback.dto.comment.checkCommentDto;
 import com.rcq.rcqback.dto.comment.getCommentDto;
 import com.rcq.rcqback.dto.comment.makeCommentDto;
+import com.rcq.rcqback.dto.condition.updateConditionDto;
 import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
@@ -101,6 +102,31 @@ public class ProblemController {
             apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="[댓글 작성 오류]";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+    @PostMapping("/problem/api/updatecondition")
+    public ResponseEntity<ApiResponse> updateCondition(@RequestBody updateConditionDto updateConditionDto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            problemService.updateCondition(updateConditionDto);
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="문제 상태 변경 오류";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/problem/api/searchproblem")
+    public ResponseEntity<ApiResponse> searchProblem(@RequestBody searchProblemDto searchProblemdto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="문제 상태 변경 오류";
             apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
