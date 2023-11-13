@@ -5,6 +5,7 @@ import com.rcq.rcqback.dto.auth.signUpUserDto;
 import com.rcq.rcqback.dto.problem.checkProblemListDto;
 import com.rcq.rcqback.dto.problem.getProblemListDto;
 import com.rcq.rcqback.dto.problem.makeProblemDto;
+import com.rcq.rcqback.dto.problem.makeProblemListDto;
 import com.rcq.rcqback.entity.User;
 import com.rcq.rcqback.entity.problem.Problem;
 import com.rcq.rcqback.entity.problem.ProblemList;
@@ -41,7 +42,35 @@ public class ProblemService {
     }
 
     @Transactional
+    public ProblemList saveProblemList(makeProblemListDto makeProblemListDto) {
+        // 새로운 문제 객체 생성
+        ProblemList problemList=new ProblemList();
+        problemList.setCategory(makeProblemListDto.getCategory());
+        problemList.setTitle(makeProblemListDto.getTitle());
+        problemList.setUserid(makeProblemListDto.getUserid());
+
+        return problemListRepository.save(problemList);
+
+    }
+
+    @Transactional
     public List<getProblemListDto> getProblemList(checkProblemListDto checkProblemListDto){
+        List<getProblemListDto> dtoList = new ArrayList<>();
+        int pagenumber=checkProblemListDto.getPagenumber();
+        int pageSize=checkProblemListDto.getPageSize();
+        Sort sort=sortProblemList(checkProblemListDto.getStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Page<ProblemList> problemListPage = problemListRepository.findAllByCategory(checkProblemListDto.getCategory(),pageable);
+        List<ProblemList> problemLists=problemListPage.getContent();
+        for(ProblemList problemList: problemLists){
+            getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    @Transactional
+    public List<getProblemListDto> getProblems(checkProblemListDto checkProblemListDto){
         List<getProblemListDto> dtoList = new ArrayList<>();
         int pagenumber=checkProblemListDto.getPagenumber();
         int pageSize=checkProblemListDto.getPageSize();

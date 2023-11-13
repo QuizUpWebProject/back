@@ -1,9 +1,7 @@
 package com.rcq.rcqback.controller;
 
 
-import com.rcq.rcqback.dto.problem.checkProblemListDto;
-import com.rcq.rcqback.dto.problem.getProblemListDto;
-import com.rcq.rcqback.dto.problem.makeProblemDto;
+import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +36,22 @@ public class ProblemController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+    @GetMapping("/problem/api/getproblems")
+    public ResponseEntity<ApiResponse> getProblems(@RequestBody checkProblemsDto checkProblemsDto){
+        ApiResponse apiResponse=new ApiResponse();
+        List<getProblemListDto> problemListDtos=problemService.getProblemList(checkProblemListDto);
+        if(problemListDtos.size()>0){
+            apiResponse.setResult(problemListDtos);
+            apiResponse.setSuccessResponse();
+        }else{
+            apiResponse.setNOTFOUNDResponse("해당 카테고리에 문제목록이 존재하지않습니다.");
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
 
     @PostMapping("/problem/api/makeproblem")
-    public ResponseEntity<ApiResponse> makeProblem(makeProblemDto makeproblemdto){
+    public ResponseEntity<ApiResponse> makeProblem(@RequestBody makeProblemDto makeproblemdto){
         ApiResponse apiResponse=new ApiResponse();
         try{
         problemService.saveProblem(makeproblemdto);
@@ -53,13 +64,13 @@ public class ProblemController {
     }
 
     @PostMapping("/problem/api/makeproblemlist")
-    public ResponseEntity<ApiResponse> makeProblemList(makeProblemDto makeproblemdto){
+    public ResponseEntity<ApiResponse> makeProblemList(@RequestBody makeProblemListDto makeProblemListDto){
         ApiResponse apiResponse=new ApiResponse();
         try{
-            problemService.saveProblem(makeproblemdto);
+            problemService.saveProblemList(makeProblemListDto);
             apiResponse.setSuccessResponse();
         }catch (Exception e){
-            String message="[문제 생성중 오류]";
+            String message="[문제집 생성중 오류]";
             apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());

@@ -1,5 +1,6 @@
 package com.rcq.rcqback.entity.problem;
 
+import com.rcq.rcqback.util.ProblemConditionEnum;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -20,6 +21,12 @@ public class Problem implements Serializable {
     @Column(name = "answer")
     private String answer;
 
+    @Column(name="viewcount")
+    private int viewcount;
+
+    @Column(name = "condition")
+    @Enumerated(EnumType.STRING)
+    private ProblemConditionEnum problemConditionEnum;
 
 
     @ManyToOne

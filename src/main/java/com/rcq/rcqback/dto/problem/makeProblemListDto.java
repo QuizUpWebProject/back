@@ -5,4 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class makeProblemListDto {}
+public class makeProblemListDto {
+    private String category;
+    private String title;
+    private String userid;
+}

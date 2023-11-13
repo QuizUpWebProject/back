@@ -1,0 +1,13 @@
+package com.rcq.rcqback.dto.problem;
+
+
+import com.rcq.rcqback.util.ProblemsStandardEnum;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class checkProblemsDto {
+    Long problemlistid;
+    ProblemsStandardEnum problemsStandardEnum;
+}
