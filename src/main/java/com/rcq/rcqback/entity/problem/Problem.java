@@ -24,9 +24,10 @@ public class Problem implements Serializable {
     @Column(name="viewcount")
     private int viewcount;
 
-    @Column(name = "condition")
+    @Column(name = "problem_condition")
     @Enumerated(EnumType.STRING)
     private ProblemConditionEnum problemConditionEnum;
+
     @Column(name="created_at")
     private LocalDateTime created_at;
 

@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 public class getProblemsDto {
 
     private Long id;
-    private String userid;
-    private String title;
+    private String question;
     private String answer;
     private int viewcount;
     private LocalDateTime created_at;

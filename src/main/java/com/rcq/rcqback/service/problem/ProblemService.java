@@ -12,6 +12,7 @@ import com.rcq.rcqback.entity.problem.ProblemList;
 import com.rcq.rcqback.repository.comment.CommentRepository;
 import com.rcq.rcqback.repository.problem.ProblemListRepository;
 import com.rcq.rcqback.repository.problem.ProblemRepository;
+import com.rcq.rcqback.util.ProblemConditionEnum;
 import com.rcq.rcqback.util.StandardEnum.CommentStandardEnum;
 import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
 import com.rcq.rcqback.util.StandardEnum.ProblemsStandardEnum;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -43,6 +45,8 @@ public class ProblemService {
         problem.setQuestion(makeProblemDto.getQuestion());
         problem.setAnswer(makeProblemDto.getAnswer());
         problem.setProblemList(problemListRepository.findByid(makeProblemDto.getProblemlistid()));
+        problem.setCreated_at(LocalDateTime.now());
+        problem.setProblemConditionEnum(ProblemConditionEnum.NO);
             return problemRepository.save(problem);
     }
 
@@ -53,7 +57,7 @@ public class ProblemService {
         problemList.setCategory(makeProblemListDto.getCategory());
         problemList.setTitle(makeProblemListDto.getTitle());
         problemList.setUserid(makeProblemListDto.getUserid());
-
+        problemList.setCreated_at(LocalDateTime.now());
         return problemListRepository.save(problemList);
 
     }
@@ -61,12 +65,13 @@ public class ProblemService {
     @Transactional
     public List<getProblemListDto> getProblemList(checkProblemListDto checkProblemListDto){
         List<getProblemListDto> dtoList = new ArrayList<>();
-        int pagenumber=checkProblemListDto.getPagenumber();
+        int pagenumber=checkProblemListDto.getPageNumber();
         int pageSize=checkProblemListDto.getPageSize();
         Sort sort=sortProblemList(checkProblemListDto.getStandardEnum());
-        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Pageable pageable= PageRequest.of(pagenumber-1, pageSize, sort);
         Page<ProblemList> problemListPage = problemListRepository.findAllByCategory(checkProblemListDto.getCategory(),pageable);
         List<ProblemList> problemLists=problemListPage.getContent();
+        System.out.println(problemLists.size());
         for(ProblemList problemList: problemLists){
             getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
             dtoList.add(dto);
@@ -77,12 +82,12 @@ public class ProblemService {
     @Transactional
     public List<getProblemsDto> getProblems(checkProblemsDto checkProblemsDto){
         List<getProblemsDto> dtoList = new ArrayList<>();
-        int pagenumber=checkProblemsDto.getPagenumber();
+        int pagenumber=checkProblemsDto.getPageNumber();
         int pageSize=checkProblemsDto.getPageSize();
         Sort sort=sortProblems(checkProblemsDto.getProblemsStandardEnum());
-        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
-        Page<Problem> problemPage = problemRepository.findByProblemListId(
-                checkProblemsDto.getProblemlistid(),
+        Pageable pageable= PageRequest.of(pagenumber-1, pageSize, sort);
+        Page<Problem> problemPage = problemRepository.findAllByProblemList_Id(
+                checkProblemsDto.getProblemlist_id(),
                 pageable
         );
         List<Problem> problems=problemPage.getContent();
@@ -100,7 +105,7 @@ public class ProblemService {
         int pageSize=checkCommentDto.getPageSize();
         Sort sort=sortComment(checkCommentDto.getCommentStandardEnum());
         Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
-        Page<Comment> commentPage = commentRepository.findByProblemListId(
+        Page<Comment> commentPage = commentRepository.findByProblemlistId(
                 checkCommentDto.getProblemlistid(),
                 pageable
         );
@@ -166,6 +171,7 @@ public class ProblemService {
         Comment comment=new Comment();
         comment.setContent(makeCommentDto.getContent());
         comment.setProblemlist(problemListRepository.findByid(makeCommentDto.getProblemlistid()));
+        comment.setCreated_at(LocalDateTime.now());
         return  commentRepository.save(comment);
 
 
@@ -184,11 +190,11 @@ public class ProblemService {
         public List<getProblemsDto> searchProblemTitle(searchProblemDto searchProblemDto){
 
             List<getProblemsDto> dtoList = new ArrayList<>();
-            int pagenumber= searchProblemDto.getPagenumber();
+            int pagenumber= searchProblemDto.getPageNumber();
             int pageSize=searchProblemDto.getPageSize();
             Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
             Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
-            Page<Problem> problemPage = problemRepository.findByProblemListIdAndTitleContaining(
+            Page<Problem> problemPage = problemRepository.findAllByProblemList_IdAndQuestionContaining(
                     searchProblemDto.getProblemlistid(), searchProblemDto.getWord(),
                     pageable
             );
@@ -201,15 +207,15 @@ public class ProblemService {
             return dtoList;
         }
 
-    public List<getProblemListDto> searchProblemListTitle(searchProblemDto searchProblemDto){
+    public List<getProblemListDto> searchProblemListTitle(searchProblemListDto searchProblemListDto){
 
         List<getProblemListDto> dtoList = new ArrayList<>();
-        int pagenumber= searchProblemDto.getPagenumber();
-        int pageSize=searchProblemDto.getPageSize();
-        Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
+        int pagenumber= searchProblemListDto.getPageNumber();
+        int pageSize=searchProblemListDto.getPageSize();
+        Sort sort=sortProblemList(searchProblemListDto.getProblemListStandardEnum());
         Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
         Page<ProblemList> problemListPage = problemListRepository.findAllByTitleContaining(
-                searchProblemDto.getWord(),
+                searchProblemListDto.getWord(),
                 pageable
         );
 
@@ -221,15 +227,15 @@ public class ProblemService {
         return dtoList;
     }
 
-    public List<getProblemListDto> searchProblemListUserId(searchProblemDto searchProblemDto){
+    public List<getProblemListDto> searchProblemListUserId(searchProblemListDto searchProblemListDto){
 
         List<getProblemListDto> dtoList = new ArrayList<>();
-        int pagenumber= searchProblemDto.getPagenumber();
-        int pageSize=searchProblemDto.getPageSize();
-        Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
+        int pagenumber= searchProblemListDto.getPageNumber();
+        int pageSize=searchProblemListDto.getPageSize();
+        Sort sort=sortProblemList(searchProblemListDto.getProblemListStandardEnum());
         Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
-        Page<ProblemList> problemListPage = problemListRepository.findAllByUserid(
-                searchProblemDto.getWord(),
+        Page<ProblemList> problemListPage = problemListRepository.findAllByTitleContaining(
+                searchProblemListDto.getWord(),
                 pageable
         );
 

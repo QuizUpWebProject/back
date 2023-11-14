@@ -12,8 +12,8 @@ public class getProblemListDto{
     private String userid;
     private String title;
     private String category;
-    private int recommendcount;
-    private int viewcount;
+    private Long recommendcount;
+    private Long viewcount;
     private LocalDateTime created_at;
 }
 

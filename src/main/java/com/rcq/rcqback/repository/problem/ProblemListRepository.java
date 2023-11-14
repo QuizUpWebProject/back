@@ -12,9 +12,8 @@ import java.util.List;
 public interface ProblemListRepository extends JpaRepository<ProblemList,Long> {
     Page<ProblemList> findAllByCategory(String category, Pageable pageable);
     ProblemList findByid(Long id);
-    Page<Problem> findByProblemListID(Long ProblemListId,Pageable pageable);
     Page<ProblemList> findAllByTitleContaining(String title,Pageable pageable);
     Page<ProblemList> findAllByUserid(String userid,Pageable pageable);
-    List<ProblemList> findAllByCategory(String category);
+
 
 }

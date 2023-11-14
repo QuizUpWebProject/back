@@ -28,10 +28,10 @@ public class ProblemList implements Serializable {
     private String category;
 
     @Column(name="recommendcount")
-    private int recommendcount;
+    private Long recommendcount;
 
     @Column(name ="viewcount")
-    private int viewcount;
+    private Long viewcount;
 
     @Column(name="created_at")
     private LocalDateTime created_at;

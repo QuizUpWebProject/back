@@ -1,6 +1,8 @@
 package com.rcq.rcqback.dto.problem;
 
 
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemsStandardEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +10,8 @@ import lombok.Setter;
 @Setter
 public class searchProblemListDto {
 
-    private int pagenumber;
+    private int pageNumber;
     private int pageSize;
     private String word;
+    private ProblemListStandardEnum problemListStandardEnum;
 }

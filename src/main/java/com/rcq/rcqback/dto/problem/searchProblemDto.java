@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class searchProblemDto {
 
-    private int pagenumber;
+    private int pageNumber;
     private int pageSize;
     private Long problemlistid;
     private String word;

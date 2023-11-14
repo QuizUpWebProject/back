@@ -8,8 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class checkProblemsDto {
-    Long problemlistid;
-    int pagenumber;
+    Long problemlist_id;
+    int pageNumber;
     int pageSize;
     ProblemsStandardEnum problemsStandardEnum;
 }

@@ -119,14 +119,40 @@ public class ProblemController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
 
-    @GetMapping("/problem/api/searchproblem")
-    public ResponseEntity<ApiResponse> searchProblem(@RequestBody searchProblemDto searchProblemdto){
+    @GetMapping("/problem/api/searchproblemtitle")
+    public ResponseEntity<ApiResponse> searchProblemTitle(@RequestBody searchProblemDto searchProblemdto){
         ApiResponse apiResponse=new ApiResponse();
         try{
-
+            problemService.searchProblemTitle(searchProblemdto);
             apiResponse.setSuccessResponse();
         }catch (Exception e){
-            String message="문제 상태 변경 오류";
+            String message="문제 제목 검색 오류";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/problem/api/searchproblemlisttitle")
+    public ResponseEntity<ApiResponse> searchProblemListTitle(@RequestBody searchProblemListDto searchProblemListDto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            problemService.searchProblemListTitle(searchProblemListDto);
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="문제집 제목 검색 오류";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/problem/api/searchproblemlistuserid")
+    public ResponseEntity<ApiResponse> searchProblemListUserId(@RequestBody searchProblemListDto searchProblemListDto){
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            problemService.searchProblemListUserId(searchProblemListDto);
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="문제집 작성자 검색 오류";
             apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());

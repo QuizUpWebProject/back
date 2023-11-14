@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class checkProblemListDto {
-    int pagenumber;
+    int pageNumber;
     int pageSize;
     String category;
     ProblemListStandardEnum standardEnum;

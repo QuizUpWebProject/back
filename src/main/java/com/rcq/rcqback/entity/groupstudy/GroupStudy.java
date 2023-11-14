@@ -37,7 +37,7 @@ public class GroupStudy implements Serializable {
     private List<Problem> problems = new ArrayList<>();
 
     @Column(name="masterid")
-    private int masterid;
+    private Long masterid;
 
 
 }
