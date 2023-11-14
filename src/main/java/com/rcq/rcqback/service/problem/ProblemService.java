@@ -181,7 +181,7 @@ public class ProblemService {
         }
         }
 
-        public List<getProblemsDto> searchProblem(searchProblemDto searchProblemDto){
+        public List<getProblemsDto> searchProblemTitle(searchProblemDto searchProblemDto){
 
             List<getProblemsDto> dtoList = new ArrayList<>();
             int pagenumber= searchProblemDto.getPagenumber();
@@ -200,6 +200,48 @@ public class ProblemService {
             }
             return dtoList;
         }
+
+    public List<getProblemListDto> searchProblemListTitle(searchProblemDto searchProblemDto){
+
+        List<getProblemListDto> dtoList = new ArrayList<>();
+        int pagenumber= searchProblemDto.getPagenumber();
+        int pageSize=searchProblemDto.getPageSize();
+        Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Page<ProblemList> problemListPage = problemListRepository.findAllByTitleContaining(
+                searchProblemDto.getWord(),
+                pageable
+        );
+
+        List<ProblemList> problemLists=problemListPage.getContent();
+        for(ProblemList problemList :problemLists){
+            getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public List<getProblemListDto> searchProblemListUserId(searchProblemDto searchProblemDto){
+
+        List<getProblemListDto> dtoList = new ArrayList<>();
+        int pagenumber= searchProblemDto.getPagenumber();
+        int pageSize=searchProblemDto.getPageSize();
+        Sort sort=sortProblems(searchProblemDto.getProblemsStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber, pageSize, sort);
+        Page<ProblemList> problemListPage = problemListRepository.findAllByUserid(
+                searchProblemDto.getWord(),
+                pageable
+        );
+
+        List<ProblemList> problemLists=problemListPage.getContent();
+        for(ProblemList problemList :problemLists){
+            getProblemListDto dto=modelMapper.map(problemList,getProblemListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+
     }
 
 
