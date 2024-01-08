@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Controller
 public class AuthController {
 
@@ -20,6 +21,7 @@ public class AuthController {
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
+
 
     @GetMapping("/joinform/api/signup/mailcheck")
     public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("mail") String mail){
