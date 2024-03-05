@@ -8,6 +8,9 @@ import com.rcq.rcqback.dto.condition.updateConditionDto;
 import com.rcq.rcqback.dto.problem.*;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
+import com.rcq.rcqback.util.StandardEnum.CommentStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
+import com.rcq.rcqback.util.StandardEnum.ProblemsStandardEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,8 +29,16 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/getlist")
-    public ResponseEntity<ApiResponse> getProblemList(@RequestBody checkProblemListDto checkProblemListDto){
+    public ResponseEntity<ApiResponse> getProblemList(@RequestParam(required = false) int pageNumber,
+                                                      @RequestParam(required = false) int pageSize,
+                                                      @RequestParam(required = false) String category,
+                                                      @RequestParam(required = false) ProblemListStandardEnum standardEnum){
         ApiResponse apiResponse=new ApiResponse();
+        checkProblemListDto checkProblemListDto = new checkProblemListDto();
+        checkProblemListDto.setPageNumber(pageNumber);
+        checkProblemListDto.setPageSize(pageSize);
+        checkProblemListDto.setCategory(category);
+        checkProblemListDto.setStandardEnum(standardEnum);
         List<getProblemListDto> problemListDtos=problemService.getProblemList(checkProblemListDto);
         if(problemListDtos.size()>0){
             apiResponse.setResult(problemListDtos);
@@ -39,7 +50,17 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/getproblems")
-    public ResponseEntity<ApiResponse> getProblems(@RequestBody checkProblemsDto checkProblemsDto){
+    public ResponseEntity<ApiResponse> getProblems(
+            @RequestParam(required = false) Long problemlist_id,
+            @RequestParam(required = false) int pageNumber,
+            @RequestParam(required = false) int pageSize,
+            @RequestParam(required = false) ProblemsStandardEnum problemsStandardEnum
+    ) {
+        checkProblemsDto checkProblemsDto = new checkProblemsDto();
+        checkProblemsDto.setProblemlist_id(problemlist_id);
+        checkProblemsDto.setPageNumber(pageNumber);
+        checkProblemsDto.setPageSize(pageSize);
+        checkProblemsDto.setProblemsStandardEnum(problemsStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         List<getProblemsDto> problemsDtoList=problemService.getProblems(checkProblemsDto);
         if(problemsDtoList.size()>0){
@@ -52,7 +73,16 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/getcomments")
-    public ResponseEntity<ApiResponse> getComments(@RequestBody checkCommentDto checkCommentDto){
+    public ResponseEntity<ApiResponse> getComments(@RequestParam(required = false) Long problemlistid,
+                                                   @RequestParam(required = false) int pagenumber,
+                                                   @RequestParam(required = false) int pageSize,
+                                                   @RequestParam(required = false) CommentStandardEnum commentStandardEnum
+    ) {
+        checkCommentDto checkCommentDto = new checkCommentDto();
+        checkCommentDto.setProblemlistid(problemlistid);
+        checkCommentDto.setPagenumber(pagenumber);
+        checkCommentDto.setPageSize(pageSize);
+        checkCommentDto.setCommentStandardEnum(commentStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         List<getCommentDto> commentDtoList=problemService.getComments(checkCommentDto);
         if(commentDtoList.size()>0){
@@ -117,7 +147,19 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/searchproblemtitle")
-    public ResponseEntity<ApiResponse> searchProblemTitle(@RequestBody searchProblemDto searchProblemdto){
+    public ResponseEntity<ApiResponse> searchProblemTitle(
+            @RequestParam(required = false) int pageNumber,
+            @RequestParam(required = false) int pageSize,
+            @RequestParam(required = false) Long problemlistid,
+            @RequestParam(required = false) String word,
+            @RequestParam(required = false) ProblemsStandardEnum problemsStandardEnum
+    ) {
+        searchProblemDto searchProblemdto = new searchProblemDto();
+        searchProblemdto.setPageNumber(pageNumber);
+        searchProblemdto.setPageSize(pageSize);
+        searchProblemdto.setProblemlistid(problemlistid);
+        searchProblemdto.setWord(word);
+        searchProblemdto.setProblemsStandardEnum(problemsStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         try{
             problemService.searchProblemTitle(searchProblemdto);
@@ -130,7 +172,18 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/searchproblemlisttitle")
-    public ResponseEntity<ApiResponse> searchProblemListTitle(@RequestBody searchProblemListDto searchProblemListDto){
+    public ResponseEntity<ApiResponse> searchProblemListTitle(
+            @RequestParam(required = false) int pageNumber,
+            @RequestParam(required = false) int pageSize,
+            @RequestParam(required = false) String word,
+            @RequestParam(required = false) ProblemListStandardEnum problemListStandardEnum
+    ) {
+        searchProblemListDto searchProblemListDto = new searchProblemListDto();
+        searchProblemListDto.setPageNumber(pageNumber);
+        searchProblemListDto.setPageSize(pageSize);
+        searchProblemListDto.setWord(word);
+        searchProblemListDto.setProblemListStandardEnum(problemListStandardEnum);
+
         ApiResponse apiResponse=new ApiResponse();
         try{
             problemService.searchProblemListTitle(searchProblemListDto);
@@ -143,7 +196,16 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/searchproblemlistuserid")
-    public ResponseEntity<ApiResponse> searchProblemListUserId(@RequestBody searchProblemListDto searchProblemListDto){
+    public ResponseEntity<ApiResponse> searchProblemListUserId(@RequestParam(required = false) int pageNumber,
+    @RequestParam(required = false) int pageSize,
+    @RequestParam(required = false) String word,
+    @RequestParam(required = false) ProblemListStandardEnum problemListStandardEnum
+    ) {
+        searchProblemListDto searchProblemListDto = new searchProblemListDto();
+        searchProblemListDto.setPageNumber(pageNumber);
+        searchProblemListDto.setPageSize(pageSize);
+        searchProblemListDto.setWord(word);
+        searchProblemListDto.setProblemListStandardEnum(problemListStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         try{
             problemService.searchProblemListUserId(searchProblemListDto);

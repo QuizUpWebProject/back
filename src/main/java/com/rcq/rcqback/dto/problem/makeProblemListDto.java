@@ -9,4 +9,5 @@ public class makeProblemListDto {
     private String category;
     private String title;
     private String userid;
+    private String usernickname;
 }

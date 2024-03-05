@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @Controller
 public class AuthController {
 
@@ -24,9 +24,9 @@ public class AuthController {
 
 
     @GetMapping("/joinform/api/signup/mailcheck")
-    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("mail") String mail){
+    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("usermail") String usermail){
         ApiResponse apiResponse=new ApiResponse();
-        if(!authService.mailCheck(mail)){
+        if(!authService.mailCheck(usermail)){
             apiResponse.setSuccessResponse();
         }else{
             apiResponse.setFAILResponse("중복이 존재합니다.");

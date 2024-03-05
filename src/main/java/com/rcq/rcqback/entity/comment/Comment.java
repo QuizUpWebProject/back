@@ -20,8 +20,8 @@ public class Comment implements Serializable {
     @Column(name = "recommendcount")
     private Long recommendcount;
 
-    @Column(name="userid")
-    private String userid;
+    @Column(name="usernickname")
+    private String usernickname;
 
     @Column(name="created_at")
     private LocalDateTime created_at;

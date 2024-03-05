@@ -21,6 +21,9 @@ public class ProblemList implements Serializable {
     @Column(name = "userid")
     private String userid;
 
+    @Column(name = "usernickname")
+    private String usernickname;
+
     @Column(name = "title")
     private String title;
 

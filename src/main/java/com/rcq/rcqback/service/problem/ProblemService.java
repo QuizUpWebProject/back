@@ -57,6 +57,7 @@ public class ProblemService {
         problemList.setCategory(makeProblemListDto.getCategory());
         problemList.setTitle(makeProblemListDto.getTitle());
         problemList.setUserid(makeProblemListDto.getUserid());
+        problemList.setUsernickname(makeProblemListDto.getUsernickname());
         problemList.setCreated_at(LocalDateTime.now());
         return problemListRepository.save(problemList);
 
@@ -171,6 +172,7 @@ public class ProblemService {
         Comment comment=new Comment();
         comment.setContent(makeCommentDto.getContent());
         comment.setProblemlist(problemListRepository.findByid(makeCommentDto.getProblemlistid()));
+        comment.setUsernickname(makeCommentDto.getUsernickname());
         comment.setCreated_at(LocalDateTime.now());
         return  commentRepository.save(comment);
 
