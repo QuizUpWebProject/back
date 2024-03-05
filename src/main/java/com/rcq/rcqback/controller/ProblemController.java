@@ -29,10 +29,10 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/getlist")
-    public ResponseEntity<ApiResponse> getProblemList(@RequestParam(required = false) int pageNumber,
-                                                      @RequestParam(required = false) int pageSize,
-                                                      @RequestParam(required = false) String category,
-                                                      @RequestParam(required = false) ProblemListStandardEnum standardEnum){
+    public ResponseEntity<ApiResponse> getProblemList(@RequestParam int pageNumber,
+                                                      @RequestParam int pageSize,
+                                                      @RequestParam String category,
+                                                      @RequestParam ProblemListStandardEnum standardEnum){
         ApiResponse apiResponse=new ApiResponse();
         checkProblemListDto checkProblemListDto = new checkProblemListDto();
         checkProblemListDto.setPageNumber(pageNumber);
@@ -51,10 +51,10 @@ public class ProblemController {
 
     @GetMapping("/problem/api/getproblems")
     public ResponseEntity<ApiResponse> getProblems(
-            @RequestParam(required = false) Long problemlist_id,
-            @RequestParam(required = false) int pageNumber,
-            @RequestParam(required = false) int pageSize,
-            @RequestParam(required = false) ProblemsStandardEnum problemsStandardEnum
+            @RequestParam Long problemlist_id,
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam ProblemsStandardEnum problemsStandardEnum
     ) {
         checkProblemsDto checkProblemsDto = new checkProblemsDto();
         checkProblemsDto.setProblemlist_id(problemlist_id);
@@ -73,10 +73,10 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/getcomments")
-    public ResponseEntity<ApiResponse> getComments(@RequestParam(required = false) Long problemlistid,
-                                                   @RequestParam(required = false) int pagenumber,
-                                                   @RequestParam(required = false) int pageSize,
-                                                   @RequestParam(required = false) CommentStandardEnum commentStandardEnum
+    public ResponseEntity<ApiResponse> getComments(@RequestParam Long problemlistid,
+                                                   @RequestParam int pagenumber,
+                                                   @RequestParam int pageSize,
+                                                   @RequestParam CommentStandardEnum commentStandardEnum
     ) {
         checkCommentDto checkCommentDto = new checkCommentDto();
         checkCommentDto.setProblemlistid(problemlistid);
@@ -148,11 +148,11 @@ public class ProblemController {
 
     @GetMapping("/problem/api/searchproblemtitle")
     public ResponseEntity<ApiResponse> searchProblemTitle(
-            @RequestParam(required = false) int pageNumber,
-            @RequestParam(required = false) int pageSize,
-            @RequestParam(required = false) Long problemlistid,
-            @RequestParam(required = false) String word,
-            @RequestParam(required = false) ProblemsStandardEnum problemsStandardEnum
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam Long problemlistid,
+            @RequestParam String word,
+            @RequestParam ProblemsStandardEnum problemsStandardEnum
     ) {
         searchProblemDto searchProblemdto = new searchProblemDto();
         searchProblemdto.setPageNumber(pageNumber);
@@ -173,10 +173,10 @@ public class ProblemController {
 
     @GetMapping("/problem/api/searchproblemlisttitle")
     public ResponseEntity<ApiResponse> searchProblemListTitle(
-            @RequestParam(required = false) int pageNumber,
-            @RequestParam(required = false) int pageSize,
-            @RequestParam(required = false) String word,
-            @RequestParam(required = false) ProblemListStandardEnum problemListStandardEnum
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam String word,
+            @RequestParam ProblemListStandardEnum problemListStandardEnum
     ) {
         searchProblemListDto searchProblemListDto = new searchProblemListDto();
         searchProblemListDto.setPageNumber(pageNumber);
@@ -196,10 +196,10 @@ public class ProblemController {
     }
 
     @GetMapping("/problem/api/searchproblemlistuserid")
-    public ResponseEntity<ApiResponse> searchProblemListUserId(@RequestParam(required = false) int pageNumber,
-    @RequestParam(required = false) int pageSize,
-    @RequestParam(required = false) String word,
-    @RequestParam(required = false) ProblemListStandardEnum problemListStandardEnum
+    public ResponseEntity<ApiResponse> searchProblemListUserId(@RequestParam int pageNumber,
+    @RequestParam int pageSize,
+    @RequestParam String word,
+    @RequestParam ProblemListStandardEnum problemListStandardEnum
     ) {
         searchProblemListDto searchProblemListDto = new searchProblemListDto();
         searchProblemListDto.setPageNumber(pageNumber);
