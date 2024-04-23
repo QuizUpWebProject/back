@@ -9,5 +9,6 @@ import java.util.List;
 public interface GroupStudyRepository extends JpaRepository<GroupStudy,Long> {
     List<GroupStudy> findAllByCategory(String category);
     GroupStudy findByid(Long Id);
+    boolean existsByGroupname(String nickname);
 
 }

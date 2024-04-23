@@ -1,9 +1,12 @@
 package com.rcq.rcqback.entity;
 
+import com.rcq.rcqback.entity.groupstudy.GroupStudy;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -19,5 +22,6 @@ public class User implements Serializable {
     private String nickname;
 
     private String password;
-
+    @ManyToMany(mappedBy = "members")
+    private Set<GroupStudy> joinedGroups = new HashSet<>();
 }

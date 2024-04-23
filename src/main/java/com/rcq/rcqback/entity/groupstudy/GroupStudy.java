@@ -1,6 +1,7 @@
 package com.rcq.rcqback.entity.groupstudy;
 
 
+import com.rcq.rcqback.entity.User;
 import com.rcq.rcqback.entity.problem.Problem;
 import lombok.Data;
 
@@ -29,6 +30,9 @@ public class GroupStudy implements Serializable {
     @Column(name="accesscode")
     private int accessCode;
 
+    @Column(name="isopen")
+    private int isOpen;
+
     @Column(name="about")
     private String about;
 
@@ -38,6 +42,20 @@ public class GroupStudy implements Serializable {
 
     @Column(name="masterid")
     private Long masterid;
+    @Column(name="notice")
+    private String notice;
+    @Column(name="mastername")
+    private String masterName;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_groupstudy",
+            joinColumns = @JoinColumn(name = "groupstudy_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "groupStudy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GroupProblem> groupProblems = new ArrayList<>();
 
 }

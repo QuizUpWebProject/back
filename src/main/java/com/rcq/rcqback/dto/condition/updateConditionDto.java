@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class updateConditionDto {
-    private long problemid;
+    private Long problemid;
     private ProblemConditionEnum problemConditionEnum;
 }

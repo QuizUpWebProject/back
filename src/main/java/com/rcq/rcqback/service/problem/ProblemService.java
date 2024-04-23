@@ -98,7 +98,20 @@ public class ProblemService {
         }
         return dtoList;
     }
+    @Transactional
+    public getProblemDto getProblem(Long problemid){
+        Optional<Problem> problemOptional= problemRepository.findById(problemid);
+        if (problemOptional.isPresent()) {
+            Problem problem = problemOptional.get();
+            getProblemDto getProblemdto= new getProblemDto();
+            getProblemdto.setQuestion(problem.getQuestion());
+            getProblemdto.setAnswer(problem.getAnswer());
+            return getProblemdto;
+        } else {
+            throw new EntityNotFoundException("문제가 존재하지않습니다.");
+        }
 
+    }
     @Transactional
     public List<getCommentDto> getComments(checkCommentDto checkCommentDto){
         List<getCommentDto> dtoList = new ArrayList<>();

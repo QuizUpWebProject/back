@@ -2,6 +2,8 @@ package com.rcq.rcqback.controller;
 
 import com.rcq.rcqback.dto.auth.loginUserDto;
 import com.rcq.rcqback.dto.auth.signUpUserDto;
+import com.rcq.rcqback.entity.User;
+import com.rcq.rcqback.repository.UserRepository;
 import com.rcq.rcqback.service.auth.AuthService;
 import com.rcq.rcqback.util.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpSession;
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
 public class AuthController {
@@ -56,11 +58,14 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login/api/login",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> loginUser(@RequestBody loginUserDto loginUserDto){
+    public ResponseEntity<ApiResponse> loginUser(@RequestBody loginUserDto loginUserDto,HttpSession session){
         ApiResponse apiResponse=new ApiResponse();
         int userLoginResult=authService.checkUserLogin(loginUserDto);
         if(userLoginResult==0){
             apiResponse.setSuccessResponse();
+
+            session.setAttribute("usermail", loginUserDto.getUsermail());
+            session.setAttribute("userId", authService.getUserId(loginUserDto.getUsermail()));
         }
         else if(userLoginResult==1){
             apiResponse.setFAILResponse("비밀번호가 틀립니다.");

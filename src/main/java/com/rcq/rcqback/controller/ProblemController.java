@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.util.List;
 @CrossOrigin
@@ -71,7 +73,20 @@ public class ProblemController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+    @GetMapping("/problem/api/getproblem")
+    public ResponseEntity<ApiResponse> getProblem(
+            @RequestParam Long problemid
+    ) {
+        getProblemDto getproblemdto= new getProblemDto();
+        ApiResponse apiResponse=new ApiResponse();
+        getproblemdto =problemService.getProblem(problemid);
+            apiResponse.setResult((List) getproblemdto);
+            apiResponse.setSuccessResponse();
 
+
+
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
     @GetMapping("/problem/api/getcomments")
     public ResponseEntity<ApiResponse> getComments(@RequestParam Long problemlistid,
                                                    @RequestParam int pagenumber,
@@ -96,8 +111,14 @@ public class ProblemController {
 
 
     @PostMapping("/problem/api/makeproblem")
-    public ResponseEntity<ApiResponse> makeProblem(@RequestBody makeProblemDto makeproblemdto){
+    public ResponseEntity<ApiResponse> makeProblem(@RequestBody makeProblemDto makeproblemdto,HttpServletRequest request){
         ApiResponse apiResponse=new ApiResponse();
+        HttpSession session = request.getSession();
+        String usermail= (String) session.getAttribute("usermail");
+        if(usermail == null) {
+            apiResponse.setFAILResponse("로그인이 필요합니다.");
+            return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+        }
         try{
         problemService.saveProblem(makeproblemdto);
         apiResponse.setSuccessResponse();
@@ -109,8 +130,14 @@ public class ProblemController {
     }
 
     @PostMapping("/problem/api/makeproblemlist")
-    public ResponseEntity<ApiResponse> makeProblemList(@RequestBody makeProblemListDto makeProblemListDto){
+    public ResponseEntity<ApiResponse> makeProblemList(@RequestBody makeProblemListDto makeProblemListDto,HttpServletRequest request){
         ApiResponse apiResponse=new ApiResponse();
+        HttpSession session = request.getSession();
+        String userid = (String) session.getAttribute("usermail");
+        if(userid == null) {
+            apiResponse.setFAILResponse("로그인이 필요합니다.");
+            return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+        }
         try{
             problemService.saveProblemList(makeProblemListDto);
             apiResponse.setSuccessResponse();
@@ -122,8 +149,14 @@ public class ProblemController {
     }
 
     @PostMapping("/problem/api/makecomment")
-    public ResponseEntity<ApiResponse> makeComment(@RequestBody makeCommentDto makeCommentDto){
+    public ResponseEntity<ApiResponse> makeComment(@RequestBody makeCommentDto makeCommentDto,HttpServletRequest request){
         ApiResponse apiResponse=new ApiResponse();
+        HttpSession session = request.getSession();
+        String userid = (String) session.getAttribute("usermail");
+        if(userid == null) {
+            apiResponse.setFAILResponse("로그인이 필요합니다.");
+            return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+        }
         try{
             problemService.saveComment(makeCommentDto);
             apiResponse.setSuccessResponse();
@@ -134,8 +167,14 @@ public class ProblemController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
     @PostMapping("/problem/api/updatecondition")
-    public ResponseEntity<ApiResponse> updateCondition(@RequestBody updateConditionDto updateConditionDto){
+    public ResponseEntity<ApiResponse> updateCondition(@RequestBody updateConditionDto updateConditionDto,HttpServletRequest request){
         ApiResponse apiResponse=new ApiResponse();
+        HttpSession session = request.getSession();
+        String userid = (String) session.getAttribute("usermail");
+        if(userid == null) {
+            apiResponse.setFAILResponse("로그인이 필요합니다.");
+            return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+        }
         try{
             problemService.updateCondition(updateConditionDto);
             apiResponse.setSuccessResponse();
@@ -162,7 +201,7 @@ public class ProblemController {
         searchProblemdto.setProblemsStandardEnum(problemsStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         try{
-            problemService.searchProblemTitle(searchProblemdto);
+            apiResponse.setResult(problemService.searchProblemTitle(searchProblemdto));
             apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="문제 제목 검색 오류";
@@ -186,7 +225,7 @@ public class ProblemController {
 
         ApiResponse apiResponse=new ApiResponse();
         try{
-            problemService.searchProblemListTitle(searchProblemListDto);
+            apiResponse.setResult(problemService.searchProblemListTitle(searchProblemListDto));
             apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="문제집 제목 검색 오류";
@@ -208,7 +247,7 @@ public class ProblemController {
         searchProblemListDto.setProblemListStandardEnum(problemListStandardEnum);
         ApiResponse apiResponse=new ApiResponse();
         try{
-            problemService.searchProblemListUserId(searchProblemListDto);
+            apiResponse.setResult(problemService.searchProblemListUserId(searchProblemListDto));
             apiResponse.setSuccessResponse();
         }catch (Exception e){
             String message="문제집 작성자 검색 오류";

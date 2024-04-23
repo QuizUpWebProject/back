@@ -11,6 +11,7 @@ public class makeGroupStudyDto {
     private int capacitylimit;
     private int accesscode;
     private String about;
-    private int masterid;
+    private Long masterid;
+    private int isOpen;
 
 }

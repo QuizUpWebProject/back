@@ -11,4 +11,5 @@ public interface ProblemRepository extends JpaRepository<Problem,Long> {
     Page<Problem> findAllByProblemList_Id(Long problemList_Id, Pageable pageable);
     Page<Problem> findAllByProblemList_IdAndQuestionContaining(Long problemListId, String Question, Pageable pageable);
 
+
 }

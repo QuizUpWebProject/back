@@ -43,7 +43,9 @@ public class AuthService {
     public User checkUserMail(String usermail){
         return userRepository.findByusermail(usermail);
     }
-
+    public Long getUserId(String usermail){
+        return userRepository.findByusermail(usermail).getId();
+    }
     public int  checkUserLogin(loginUserDto loginuserdto){
         User user=checkUserMail(loginuserdto.getUsermail());
         if(user!=null){
