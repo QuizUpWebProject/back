@@ -75,7 +75,7 @@ public class GroupStudyService {
         User user = userRepository.findById(userId).orElse(null);
         if (user != null) {
             // 사용자가 속한 그룹스터디 목록 가져오기
-            List<GroupStudy> groupStudies = new ArrayList<>(user.getJoinedGroups());
+            List<GroupStudy> groupStudies = new ArrayList<>(user.getGroupStudies());
 
             // 그룹스터디 DTO로 매핑하여 리스트에 추가
             for (GroupStudy groupStudy : groupStudies) {

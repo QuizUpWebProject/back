@@ -8,7 +8,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -36,10 +38,6 @@ public class GroupStudy implements Serializable {
     @Column(name="about")
     private String about;
 
-    @OneToMany
-    @JoinColumn(name="problemlist")
-    private List<Problem> problems = new ArrayList<>();
-
     @Column(name="masterid")
     private Long masterid;
     @Column(name="notice")
@@ -47,13 +45,16 @@ public class GroupStudy implements Serializable {
     @Column(name="mastername")
     private String masterName;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "user_groupstudy",
             joinColumns = @JoinColumn(name = "groupstudy_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> members = new ArrayList<>();
+    private List<User> members = new ArrayList<>();*/
+    @ManyToMany(mappedBy = "groupStudies")
+    private Set<User> members = new HashSet<>();
+
 
     @OneToMany(mappedBy = "groupStudy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GroupProblem> groupProblems = new ArrayList<>();

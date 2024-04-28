@@ -128,6 +128,20 @@ public class ProblemController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+    @PostMapping("problem/api/recommend")
+    public ResponseEntity<ApiResponse> problemListRecoomend(@RequestParam Long problemListId,HttpServletRequest request){
+        ApiResponse apiResponse=new ApiResponse();
+        HttpSession session = request.getSession();
+        try {
+            problemService.recommend(problemListId);
+        } catch (Exception e){
+            String message=" 추천중 오류 발생";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+
 
     @PostMapping("/problem/api/makeproblemlist")
     public ResponseEntity<ApiResponse> makeProblemList(@RequestBody makeProblemListDto makeProblemListDto,HttpServletRequest request){

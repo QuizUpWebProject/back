@@ -83,6 +83,9 @@ public class ProblemService {
     @Transactional
     public List<getProblemsDto> getProblems(checkProblemsDto checkProblemsDto){
         List<getProblemsDto> dtoList = new ArrayList<>();
+        ProblemList problemList=problemListRepository.findByid(checkProblemsDto.getProblemlist_id());
+        problemList.setViewcount(problemList.getViewcount()+1);
+        problemListRepository.save(problemList);
         int pagenumber=checkProblemsDto.getPageNumber();
         int pageSize=checkProblemsDto.getPageSize();
         Sort sort=sortProblems(checkProblemsDto.getProblemsStandardEnum());
@@ -103,6 +106,8 @@ public class ProblemService {
         Optional<Problem> problemOptional= problemRepository.findById(problemid);
         if (problemOptional.isPresent()) {
             Problem problem = problemOptional.get();
+            problem.setViewcount(problem.getViewcount()+1);
+            problemRepository.save(problem);
             getProblemDto getProblemdto= new getProblemDto();
             getProblemdto.setQuestion(problem.getQuestion());
             getProblemdto.setAnswer(problem.getAnswer());
@@ -111,6 +116,23 @@ public class ProblemService {
             throw new EntityNotFoundException("문제가 존재하지않습니다.");
         }
 
+    }
+
+    @Transactional
+    public void recommend(Long problemListId) throws Exception {
+        try {
+            ProblemList problemList = problemListRepository.findById(problemListId)
+                    .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 문제 리스트를 찾을 수 없습니다."));
+
+            problemList.setRecommendcount(problemList.getRecommendcount() + 1);
+            problemListRepository.save(problemList);
+        } catch (EntityNotFoundException e) {
+            // 예외 처리 - 해당 ID에 해당하는 문제 리스트가 없을 경우
+            throw e;
+        } catch (Exception e) {
+            // 기타 예외 처리 - 롤백을 위해 RuntimeException으로 변환
+            throw new RuntimeException("문제 리스트 추천 중 오류가 발생했습니다.", e);
+        }
     }
     @Transactional
     public List<getCommentDto> getComments(checkCommentDto checkCommentDto){

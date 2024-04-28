@@ -22,6 +22,11 @@ public class User implements Serializable {
     private String nickname;
 
     private String password;
-    @ManyToMany(mappedBy = "members")
-    private Set<GroupStudy> joinedGroups = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "user_groupstudy",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "groupstudy_id")
+    )
+    private Set<GroupStudy> groupStudies = new HashSet<>();
 }
