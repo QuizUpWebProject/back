@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.util.List;
-@CrossOrigin
+@CrossOrigin(origins = {"http://49.50.174.118:3000", "http://localhost:3000"})
 @Controller
 public class ProblemController {
 

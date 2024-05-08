@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"http://49.50.174.118:3000", "http://localhost:3000"})
 @Controller
 public class AuthController {
 
