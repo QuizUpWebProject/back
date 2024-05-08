@@ -26,7 +26,7 @@ public class AuthController {
 
 
     @GetMapping("/joinform/api/signup/mailcheck")
-    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("usermail") String usermail){
+    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("mail") String usermail){
         ApiResponse apiResponse=new ApiResponse();
         if(!authService.mailCheck(usermail)){
             apiResponse.setSuccessResponse();
