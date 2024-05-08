@@ -26,9 +26,9 @@ public class AuthController {
 
 
     @GetMapping("/joinform/api/signup/mailcheck")
-    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("mail") String usermail){
+    public ResponseEntity<ApiResponse> emailDuplicateCheck(@RequestParam("mail") String mail){
         ApiResponse apiResponse=new ApiResponse();
-        if(!authService.mailCheck(usermail)){
+        if(!authService.mailCheck(mail)){
             apiResponse.setSuccessResponse();
         }else{
             apiResponse.setFAILResponse("중복이 존재합니다.");
