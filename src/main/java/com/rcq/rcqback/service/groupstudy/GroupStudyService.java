@@ -113,6 +113,7 @@ public class GroupStudyService {
         List<GroupStudy> groupStudyList=groupStudyPage.getContent();
         for(GroupStudy groupStudy: groupStudyList){
             getGroupListDto dto=modelMapper.map(groupStudy,getGroupListDto.class);
+            dto.setCurrent(groupStudy.getMembers().size());
             dtoList.add(dto);
         }
         return dtoList;

@@ -88,7 +88,7 @@ public class GroupStudyController {
 
 
     @GetMapping("/groupstudy/api/getlist")
-    public ResponseEntity<ApiResponse> getProblemList(@RequestParam int pageNumber,
+    public ResponseEntity<ApiResponse> getGroupList(@RequestParam int pageNumber,
                                                       @RequestParam int pageSize,
                                                       @RequestParam(required = false) String category,
                                                       @RequestParam(required = false) ProblemListStandardEnum standardEnum){

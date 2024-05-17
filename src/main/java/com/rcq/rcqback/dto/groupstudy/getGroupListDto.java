@@ -9,9 +9,10 @@ import lombok.Setter;
 public class getGroupListDto {
 
         private Long id;
-        private String userid;
-        private String title;
+        private String masterName;
+        private String groupname;
         private String category;
-        private Long recommendcount;
+        private int capacityLimit;
+        private int current;
         private int isOpen;
 }
