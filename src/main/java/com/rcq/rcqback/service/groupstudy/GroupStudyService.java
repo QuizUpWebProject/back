@@ -13,6 +13,7 @@ import com.rcq.rcqback.entity.problem.ProblemList;
 import com.rcq.rcqback.repository.GroupStudyRepository.GroupProblemRepository;
 import com.rcq.rcqback.repository.GroupStudyRepository.GroupStudyRepository;
 import com.rcq.rcqback.repository.UserRepository;
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,7 @@ public class GroupStudyService {
     private final GroupProblemRepository groupProblemRepository;
     private final GroupStudyRepository groupStudyRepository;
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper = new ModelMapper();
     public boolean groupnameCheck(String nickname){
         return groupStudyRepository.existsByGroupname(nickname);
     }
@@ -95,8 +97,44 @@ public class GroupStudyService {
 
         return getMyGroupDtoList;
     }
+    @Transactional
+    public List<getGroupListDto> getGroupList(checkGroupListDto checkGroupListDto){
+        List<getGroupListDto> dtoList = new ArrayList<>();
+        int pagenumber=checkGroupListDto.getPageNumber();
+        int pageSize=checkGroupListDto.getPageSize();
+        Sort sort=sortGroup(checkGroupListDto.getStandardEnum());
+        Pageable pageable= PageRequest.of(pagenumber-1, pageSize, sort);
+        Page<GroupStudy> groupStudyPage ;
+        if ("ALL".equalsIgnoreCase(checkGroupListDto.getCategory())) {
+            groupStudyPage = groupStudyRepository.findAll(pageable);
+        } else {
+            groupStudyPage = (Page<GroupStudy>) groupStudyRepository.findAllByCategory(checkGroupListDto.getCategory(), pageable);
+        }
+        List<GroupStudy> groupStudyList=groupStudyPage.getContent();
+        for(GroupStudy groupStudy: groupStudyList){
+            getGroupListDto dto=modelMapper.map(groupStudy,getGroupListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
 
-
-
+    public Sort sortGroup(ProblemListStandardEnum standardEnum){
+        Sort sort = Sort.unsorted();
+        switch (standardEnum) {
+            case LATEST:
+                sort = Sort.by("id").descending();
+                break;
+            case OLDEST:
+                sort = Sort.by("id").ascending();
+                break;
+            case RECOMMEND:
+                sort = Sort.by("recommendcount").descending();
+                break;
+            case VIEW:
+                sort = Sort.by("viewcount").descending();
+                break;
+        }
+        return sort;
+    }
 
 }

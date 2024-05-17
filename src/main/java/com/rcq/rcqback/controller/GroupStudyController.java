@@ -1,12 +1,15 @@
 package com.rcq.rcqback.controller;
 
-
+import com.rcq.rcqback.dto.groupstudy.*;
 import com.rcq.rcqback.dto.groupstudy.getMyGroupDto;
 import com.rcq.rcqback.dto.groupstudy.makeGroupStudyDto;
+import com.rcq.rcqback.dto.problem.checkProblemListDto;
 import com.rcq.rcqback.dto.problem.getProblemDto;
+import com.rcq.rcqback.dto.problem.getProblemListDto;
 import com.rcq.rcqback.service.groupstudy.GroupStudyService;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
+import com.rcq.rcqback.util.StandardEnum.ProblemListStandardEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -84,4 +87,32 @@ public class GroupStudyController {
         }
     }
 
+    @GetMapping("/groupstudy/api/getlist")
+    public ResponseEntity<ApiResponse> getProblemList(@RequestParam int pageNumber,
+                                                      @RequestParam int pageSize,
+                                                      @RequestParam(required = false) String category,
+                                                      @RequestParam(required = false) ProblemListStandardEnum standardEnum){
 
+        ApiResponse apiResponse=new ApiResponse();
+        checkGroupListDto checkGroupListDto = new checkGroupListDto();
+        checkGroupListDto.setPageNumber(pageNumber);
+        checkGroupListDto.setPageSize(pageSize);
+        if(category==null){
+            checkGroupListDto.setCategory("ALL");
+        }else{
+        checkGroupListDto.setCategory(category);}
+        if(standardEnum==null){
+            checkGroupListDto.setStandardEnum(ProblemListStandardEnum.LATEST);
+        }
+        else{checkGroupListDto.setStandardEnum(standardEnum);}
+        List<getGroupListDto> groupListDtos=groupStudyService.getGroupList(checkGroupListDto);
+        if(groupListDtos.size()>0){
+            apiResponse.setResult(groupListDtos);
+            apiResponse.setSuccessResponse();
+        }else{
+            apiResponse.setNOTFOUNDResponse("그룹스터디가 존재하지않습니다");
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+}
