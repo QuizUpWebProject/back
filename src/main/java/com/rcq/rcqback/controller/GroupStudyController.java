@@ -85,7 +85,7 @@ public class GroupStudyController {
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
 
         }
-    }
+
 
     @GetMapping("/groupstudy/api/getlist")
     public ResponseEntity<ApiResponse> getProblemList(@RequestParam int pageNumber,
