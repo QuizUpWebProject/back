@@ -34,8 +34,8 @@ public class GroupStudyService {
     private final GroupStudyRepository groupStudyRepository;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper = new ModelMapper();
-    public boolean groupnameCheck(String nickname){
-        return groupStudyRepository.existsByGroupname(nickname);
+    public boolean groupnameCheck(String groupname){
+        return groupStudyRepository.existsByGroupname(groupname);
     }
     @Transactional
     public GroupStudy makeGroupStudy(makeGroupStudyDto makegroupstudydto) {
@@ -137,5 +137,47 @@ public class GroupStudyService {
         }
         return sort;
     }
+
+    public List<getGroupListDto> searchGroupStudyTitle(searchGroupStudyDto searchGroupStudyDto) {
+
+        List<getGroupListDto> dtoList = new ArrayList<>();
+        int pagenumber = searchGroupStudyDto.getPageNumber();
+        int pageSize = searchGroupStudyDto.getPageSize();
+        Sort sort = sortGroup(searchGroupStudyDto.getProblemListStandardEnum());
+        Pageable pageable = PageRequest.of(pagenumber, pageSize, sort);
+        Page<GroupStudy> groupStudyPage = groupStudyRepository.findAllByTitleContaining(
+                searchGroupStudyDto.getWord(),
+                pageable
+        );
+
+        List<GroupStudy> groupStudies = groupStudyPage.getContent();
+        for (GroupStudy groupStudy : groupStudies) {
+            getGroupListDto dto = modelMapper.map(groupStudy, getGroupListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+    public List<getGroupListDto> searchGroupStudyUserId(searchGroupStudyDto searchGroupStudyDto) {
+
+        List<getGroupListDto> dtoList = new ArrayList<>();
+        int pagenumber = searchGroupStudyDto.getPageNumber();
+        int pageSize = searchGroupStudyDto.getPageSize();
+        Sort sort = sortGroup(searchGroupStudyDto.getProblemListStandardEnum());
+        Pageable pageable = PageRequest.of(pagenumber, pageSize, sort);
+        Page<GroupStudy> groupStudyPage = groupStudyRepository.findAllByMasterName(
+                searchGroupStudyDto.getWord(),
+                pageable
+        );
+
+        List<GroupStudy> groupStudies = groupStudyPage.getContent();
+        for (GroupStudy groupStudy : groupStudies) {
+            getGroupListDto dto = modelMapper.map(groupStudy, getGroupListDto.class);
+            dtoList.add(dto);
+        }
+        return dtoList;
+    }
+
+
 
 }

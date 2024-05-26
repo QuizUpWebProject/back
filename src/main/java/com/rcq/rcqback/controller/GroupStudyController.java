@@ -6,6 +6,7 @@ import com.rcq.rcqback.dto.groupstudy.makeGroupStudyDto;
 import com.rcq.rcqback.dto.problem.checkProblemListDto;
 import com.rcq.rcqback.dto.problem.getProblemDto;
 import com.rcq.rcqback.dto.problem.getProblemListDto;
+import com.rcq.rcqback.dto.problem.searchProblemListDto;
 import com.rcq.rcqback.service.groupstudy.GroupStudyService;
 import com.rcq.rcqback.service.problem.ProblemService;
 import com.rcq.rcqback.util.ApiResponse;
@@ -51,7 +52,7 @@ public class GroupStudyController {
     @GetMapping("/groupstudy/api/groupnamecheck")
     public ResponseEntity<ApiResponse> groupnameDuplicateCheck(@RequestParam String groupname){
         ApiResponse apiResponse=new ApiResponse();
-        if(groupStudyService.groupnameCheck(groupname)){
+        if(!groupStudyService.groupnameCheck(groupname)){
             apiResponse.setSuccessResponse();
         }else{
             apiResponse.setFAILResponse("중복이 존재합니다.");
@@ -114,5 +115,49 @@ public class GroupStudyController {
         }
         return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
     }
+    @GetMapping("/groupstudy/api/searchgroupstudytitle")
+    public ResponseEntity<ApiResponse> searchGroupStudyTitle(
+            @RequestParam int pageNumber,
+            @RequestParam int pageSize,
+            @RequestParam String word,
+            @RequestParam ProblemListStandardEnum problemListStandardEnum
+    ) {
+        searchGroupStudyDto searchGroupStudyDto= new searchGroupStudyDto();
+        searchGroupStudyDto.setPageNumber(pageNumber);
+        searchGroupStudyDto.setPageSize(pageSize);
+        searchGroupStudyDto.setWord(word);
+        searchGroupStudyDto.setProblemListStandardEnum(problemListStandardEnum);
 
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            apiResponse.setResult(groupStudyService.searchGroupStudyTitle(searchGroupStudyDto));
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="GroupStudy 제목 검색 오류";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
+
+    @GetMapping("/groupstudy/api/searchgroupstudyuserid")
+    public ResponseEntity<ApiResponse> searchGroupStudyUserId(@RequestParam int pageNumber,
+                                                               @RequestParam int pageSize,
+                                                               @RequestParam String word,
+                                                               @RequestParam ProblemListStandardEnum problemListStandardEnum
+    ) {
+        searchGroupStudyDto searchGroupStudyDto= new searchGroupStudyDto();
+        searchGroupStudyDto.setPageNumber(pageNumber);
+        searchGroupStudyDto.setPageSize(pageSize);
+        searchGroupStudyDto.setWord(word);
+        searchGroupStudyDto.setProblemListStandardEnum(problemListStandardEnum);
+        ApiResponse apiResponse=new ApiResponse();
+        try{
+            apiResponse.setResult(groupStudyService.searchGroupStudyUserId(searchGroupStudyDto));
+            apiResponse.setSuccessResponse();
+        }catch (Exception e){
+            String message="GroupStudy 작성자 검색 오류";
+            apiResponse.setINTERNAL_SERVER_ERRORResponse(message+e.getMessage());
+        }
+        return new ResponseEntity<>(apiResponse, apiResponse.getHttpStatus());
+    }
 }
