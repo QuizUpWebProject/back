@@ -145,7 +145,7 @@ public class GroupStudyService {
         int pageSize = searchGroupStudyDto.getPageSize();
         Sort sort = sortGroup(searchGroupStudyDto.getProblemListStandardEnum());
         Pageable pageable = PageRequest.of(pagenumber, pageSize, sort);
-        Page<GroupStudy> groupStudyPage = groupStudyRepository.findAllByTitleContaining(
+        Page<GroupStudy> groupStudyPage = groupStudyRepository.findAllByGroupname(
                 searchGroupStudyDto.getWord(),
                 pageable
         );

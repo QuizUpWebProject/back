@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface GroupStudyRepository extends JpaRepository<GroupStudy,Long> {
     List<GroupStudy> findAllByCategory(String category, Pageable pageable);
-    Page<GroupStudy> findAllByTitleContaining(String title, Pageable pageable);
+    Page<GroupStudy> findAllByGroupname(String title, Pageable pageable);
     Page<GroupStudy> findAllByMasterName(String name, Pageable pageable);
     GroupStudy findByid(Long Id);
     boolean existsByGroupname(String groupname);
