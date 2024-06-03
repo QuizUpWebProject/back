@@ -20,7 +20,7 @@ public class AuthController {
     @Autowired
     private final AuthService authService;
 
-    @Value("${test.mode}")
+    @Value("${test.mode:false}")
     private boolean testMode;
 
     public AuthController(AuthService authService) {
