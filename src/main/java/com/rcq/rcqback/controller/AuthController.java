@@ -20,7 +20,7 @@ public class AuthController {
     @Autowired
     private final AuthService authService;
 
-    @Value("${test.mode:false}")
+    @Value("${spring.test.mode}")
     private boolean testMode;
 
     public AuthController(AuthService authService) {

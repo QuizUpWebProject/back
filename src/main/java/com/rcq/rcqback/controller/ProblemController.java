@@ -27,7 +27,7 @@ public class ProblemController {
     @Autowired
     private final ProblemService problemService;
 
-    @Value("${test.mode:false}")
+    @Value("${spring.test.mode}")
     private boolean testMode;
 
     public ProblemController(ProblemService problemService) {

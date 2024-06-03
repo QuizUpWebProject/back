@@ -21,7 +21,7 @@ public class GroupStudyController {
     @Autowired
     private final GroupStudyService groupStudyService;
 
-    @Value("${test.mode:false}")
+    @Value("${spring.test.mode}")
     private boolean testMode;
 
     public GroupStudyController(GroupStudyService groupStudyService) {
