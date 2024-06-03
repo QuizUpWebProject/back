@@ -13,3 +13,5 @@ spring:
       dialect: org.hibernate.dialect.MariaDBDialect
   jwt:
     secret: 852a318a2998dc52dd019ea330f636b5e1e9c29d407ecf10bd2a8499a895a230
+  test:
+    mode: true
